@@ -127,6 +127,7 @@ prompt pure
 | **`PURE_GIT_DOWN_ARROW`**        | Defines the git down arrow symbol.                                                             | `⇣`            |
 | **`PURE_GIT_UP_ARROW`**          | Defines the git up arrow symbol.                                                               | `⇡`            |
 | **`PURE_GIT_STASH_SYMBOL`**      | Defines the git stash symbol.                                                                  | `≡`            |
+| **`PURE_SHOW_ARCH`**             | Show the type of architecture if set to 1. (e.g. arm64, x86_64)                                | `0`          |
 
 ## Zstyle options
 

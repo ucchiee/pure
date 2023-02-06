@@ -142,6 +142,9 @@ prompt_pure_preprompt_render() {
 	# Set the path.
 	preprompt_parts+=('%F{${prompt_pure_colors[path]}}%~%f')
 
+	# Architechture, if applicable.
+	[[ -n $prompt_pure_state[arch] ]] && preprompt_parts+=("%F{$prompt_pure_colors[arch]}"'$prompt_pure_state[arch]'"%f")
+
 	# Git branch and dirty status info.
 	typeset -gA prompt_pure_vcs_info
 	if [[ -n $prompt_pure_vcs_info[branch] ]]; then
@@ -671,7 +674,7 @@ prompt_pure_state_setup() {
 
 	# Check SSH_CONNECTION and the current state.
 	local ssh_connection=${SSH_CONNECTION:-$PROMPT_PURE_SSH_CONNECTION}
-	local username hostname
+	local username hostname arch
 	if [[ -z $ssh_connection ]] && (( $+commands[who] )); then
 		# When changing user on a remote system, the $SSH_CONNECTION
 		# environment variable can be lost. Attempt detection via `who`.
@@ -714,10 +717,14 @@ prompt_pure_state_setup() {
 	# Show `username@host` if root, with username in default color.
 	[[ $UID -eq 0 ]] && username='%F{$prompt_pure_colors[user:root]}%n%f'"$hostname"
 
+	# Show type of architechture when using Apple machine
+	[[ $(uname -s) == "Darwin" && ${PURE_SHOW_ARCH:-1} == 1 ]] && arch="$(uname -m)"
+
 	typeset -gA prompt_pure_state
 	prompt_pure_state[version]="1.21.0"
 	prompt_pure_state+=(
 		username "$username"
+		arch     "$arch"
 		prompt	 "${PURE_PROMPT_SYMBOL:-❯}"
 	)
 }
@@ -832,6 +839,7 @@ prompt_pure_setup() {
 		user                 242
 		user:root            default
 		virtualenv           242
+		arch                 221
 	)
 	prompt_pure_colors=("${(@kv)prompt_pure_colors_default}")
 
